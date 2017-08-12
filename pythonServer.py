@@ -7,9 +7,14 @@ api = Api(app)
 class MyResource(Resource):
     def post(self):
         data = request.data
+        dict = {'username1':'allengng', 'username2':'siushi'}
+        final = []
         # Process data
-        f = requests.get('https://api.github.com/users/%s/keys' % data)
-        return {'message': f.text}
+        for i in range (1,3):
+            f = requests.get('https://api.github.com/users/%s/keys' % dict.get('username%s' % i))
+            final.append(f.text)
+
+        return {'message': final}
 
 api.add_resource(MyResource, '/')
 
