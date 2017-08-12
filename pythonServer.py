@@ -2,6 +2,8 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 import json
 import requests
+import pprint
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -20,7 +22,11 @@ class MyResource(Resource):
         #dict1 = {'name': '', 'id-key': dict2}
         #dict0 = {'user-keys' : dict1}
 
-        #dict6 = {'Allen' : [{}]}
+        dict6 = {}
+        nameess = 'Allen'
+        idd = 6
+        keyy = 'AAAAAA'
+        dict6[nameess] = ({'id': idd, 'key': keyy})
 
         # Begin looping and get the ID and Key for the given GitHub usernames
         for i in range(0, len(name)):
@@ -36,9 +42,10 @@ class MyResource(Resource):
                 for j in dictResult:
                     dict5['id'] = j['id']
                     dict5['key'] = j['key']
+
                     usernames.append(dict5.items())
 
-        # Sends the list with all usernames, keys, and IDs to the client.            
+        # Sends the list with all usernames, keys, and IDs to the client.
         return {'message': usernames}
 
 api.add_resource(MyResource, '/')
