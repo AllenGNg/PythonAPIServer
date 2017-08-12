@@ -20,22 +20,26 @@ class MyResource(Resource):
         dict1 = {'name': '', 'id-key': dict2}
         dict0 = {'user-keys' : dict1}
 
+        dict6 = {'Allen' : [{}]}
+
+
         # Begin looping and get the ID and Key for the given GitHub usernames
         for i in range(0, len(name)):
+            dict5 = {'username': '', 'id': '', 'key': ''}
+
             f = requests.get('https://api.github.com/users/%s/keys' % name[i])
 
             # Check to see if it was successful and returned somemthing
             if(f.status_code == requests.codes.ok):
-                dict1['name'] = name[i]
+                dict5['username'] = name[i]
                 dictResult = f.json()
 
                 #keys.append(f.text)
                 #keys.append(f.status_code)
-                for i in dictResult:
-                    dict2['id'] = i['id']
-                    dict2['key'] = i['key']
-
-                usernames.append(dict0.items())
+                for j in dictResult:
+                    dict5['id'] = j['id']
+                    dict5['key'] = j['key']
+                    usernames.append(dict5.items())
         return {'message': usernames}
 
 api.add_resource(MyResource, '/')
