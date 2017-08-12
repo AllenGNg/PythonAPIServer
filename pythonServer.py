@@ -8,20 +8,19 @@ api = Api(app)
 class MyResource(Resource):
     def post(self):
 
+        # Final list to be returned to Client.
         usernames = []
-        keys = []
 
-        # Load the data given by the client
+        # Load the data given by the client,
         dict = json.loads(request.data)
         name = dict.get('user-name-list')
 
-        # The outline for the output back to the client
-        dict2 = {'id': '', 'key': ''}
-        dict1 = {'name': '', 'id-key': dict2}
-        dict0 = {'user-keys' : dict1}
+        # The outline for the output back to the client. NOT IN USE
+        #dict2 = {'id': '', 'key': ''}
+        #dict1 = {'name': '', 'id-key': dict2}
+        #dict0 = {'user-keys' : dict1}
 
-        dict6 = {'Allen' : [{}]}
-
+        #dict6 = {'Allen' : [{}]}
 
         # Begin looping and get the ID and Key for the given GitHub usernames
         for i in range(0, len(name)):
@@ -29,17 +28,17 @@ class MyResource(Resource):
 
             f = requests.get('https://api.github.com/users/%s/keys' % name[i])
 
-            # Check to see if it was successful and returned somemthing
+            # Check to see if it was successful and returned something
             if(f.status_code == requests.codes.ok):
                 dict5['username'] = name[i]
                 dictResult = f.json()
 
-                #keys.append(f.text)
-                #keys.append(f.status_code)
                 for j in dictResult:
                     dict5['id'] = j['id']
                     dict5['key'] = j['key']
                     usernames.append(dict5.items())
+
+        # Sends the list with all usernames, keys, and IDs to the client.            
         return {'message': usernames}
 
 api.add_resource(MyResource, '/')
