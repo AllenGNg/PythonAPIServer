@@ -28,22 +28,33 @@ class MyResource(Resource):
         keyy = 'AAAAAA'
         dict6[nameess] = ({'id': idd, 'key': keyy})
 
+        listttt = []
+        listttt.append({'id': idd})
+
         # Begin looping and get the ID and Key for the given GitHub usernames
         for i in range(0, len(name)):
             dict5 = {'username': '', 'id': '', 'key': ''}
 
             f = requests.get('https://api.github.com/users/%s/keys' % name[i])
 
-            # Check to see if it was successful and returned something
+            # Regardless if the user has keys or IDs, set their usename.
+            dict5['username'] = name[i]
+
+            # Check to see if it was successful and returned something.
             if(f.status_code == requests.codes.ok):
-                dict5['username'] = name[i]
                 dictResult = f.json()
 
+                # Incase the user has multiple keys and IDs.
                 for j in dictResult:
                     dict5['id'] = j['id']
                     dict5['key'] = j['key']
-
                     usernames.append(dict5.items())
+
+            # If it does not return anything, fill in the blanks with 'N/A'.
+            else:
+                dict5['id'] = 'N/A'
+                dict5['key'] = 'N/A'
+                usernames.append(dict5.items())
 
         # Sends the list with all usernames, keys, and IDs to the client.
         return {'message': usernames}
