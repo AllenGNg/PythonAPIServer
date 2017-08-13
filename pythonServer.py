@@ -23,22 +23,17 @@ class MyResource(Resource):
         #dict0 = {'user-keys' : dict1}
 
         dict6 = {}
-        nameess = 'Allen'
-        idd = 6
-        keyy = 'AAAAAA'
-        dict6[nameess] = ({'id': idd, 'key': keyy})
-
         listttt = []
-        listttt.append({'id': idd})
 
         # Begin looping and get the ID and Key for the given GitHub usernames
         for i in range(0, len(name)):
-            dict5 = {'username': '', 'id': '', 'key': ''}
+            #dict5 = {'username': '', 'id': '', 'key': ''}
+
 
             f = requests.get('https://api.github.com/users/%s/keys' % name[i])
 
             # Regardless if the user has keys or IDs, set their usename.
-            dict5['username'] = name[i]
+            #dict5['username'] = name[i]
 
             # Check to see if it was successful and returned something.
             if(f.status_code == requests.codes.ok):
@@ -46,16 +41,20 @@ class MyResource(Resource):
 
                 # Incase the user has multiple keys and IDs.
                 for j in dictResult:
-                    dict5['id'] = j['id']
-                    dict5['key'] = j['key']
-                    usernames.append(dict5.items())
+                    #dict5['id'] = j['id']
+                    #dict5['key'] = j['key']
+                    #usernames.append(dict5.items())
+                    dict6[name[i]] = [{'id': j['id'], 'key': j['key']}]
+                    #usernames.append(dict6[name[i]].items())
 
             # If it does not return anything, fill in the blanks with 'N/A'.
             else:
-                dict5['id'] = 'N/A'
-                dict5['key'] = 'N/A'
-                usernames.append(dict5.items())
+                dict6[name[i]] = [{'id': 'N/A', 'key': 'N/A'}]
+                #dict5['id'] = 'N/A'
+                #dict5['key'] = 'N/A'
+                #usernames.append(dict6.items())
 
+        usernames.append(dict6.items())
         # Sends the list with all usernames, keys, and IDs to the client.
         return {'message': usernames}
 
