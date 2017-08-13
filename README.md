@@ -2,7 +2,7 @@
 A simple Python API Server using GitHub's API for Replicated Code Challenge
 
 ## **Challenge**
-Given a list of GitHub User names through a POST request, return all of the user names IDs and Public SSH Keys in JSON. Some people may have more than one Public SSH Keys.
+Given a list of GitHub User names through a POST request, using GitHub's API, return all of the usernames' IDs and Public SSH Keys in JSON. Some people may have more than one ID and Public SSH Keys.
 
 ## **Setting Up:**
 To set up my project, the first thing you would want to do is to edit the pythonClient.py file. In that file there is a Dictionary labeled dict. For example,
