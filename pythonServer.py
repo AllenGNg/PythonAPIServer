@@ -50,12 +50,13 @@ class MyResource(Resource):
                 got429 = True
 
         # Sends the dictionary with all usernames, keys, and IDs to the client.
+        # Checks certain cases, and responds accordingly.
         if(got200 == True and got429 == False):
             return {'keyData': outputDict, 'Return Message': 'No Errors Occured.' }
         elif(got200 == True and got429 == True):
             return{'keyData': outputDict, 'Return Message': 'All names were processed but due to the limit of API calls being met, not all keys and IDs may be shown.'}
         elif(got200 == False and got429 == True):
-            return {'keyData': [], 'Return Message': 'No names processed, API Calls limit has been reached.'}
+            return {'keyData': [], 'Return Message': 'No names were processed, the amount of calls to the GitHub API has been reached. Please wait until your limit has been reset.'}
 
 api.add_resource(MyResource, '/getKeys')
 
