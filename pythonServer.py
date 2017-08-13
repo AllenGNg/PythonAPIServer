@@ -32,8 +32,8 @@ class MyResource(Resource):
                 print(f.status_code)
                 responseData = f.json()
 
-                # Incase the user has multiple keys and IDs.
-                # Counter used for creating the key for the first id and key found
+                # Where we create the dictionary for each username.
+                # Counter used for creating the dicitonary only once for every username regardless if they have more than one ID and Key pair.
                 counter = 1
                 for j in responseData:
                     # If this is the first run through, it will create the key which is the username.
@@ -55,12 +55,16 @@ class MyResource(Resource):
 
         # Sends the dictionary with all usernames, keys, and IDs to the client.
         # Checks certain cases, and responds accordingly.
+
+        # This checks to see if we ran into any errors.
         if(got200 == True and got403 == False):
             return {'keyData': outputDict, 'Return Message': 'No Errors Occured.' }
+        # This checks to see if we ran into the max number of GitHub API calls midway through a POST request.
         elif(got200 == True and got403 == True):
             return{'keyData': outputDict, 'Return Message': 'All names were processed but due to the limit of API calls being met, not all keys and IDs may be shown.'}
+        # This checks to see if we try sending a POST request after we have used all of our avaialbel API calls.
         elif(got200 == False and got403 == True):
-            return {'keyData': [], 'Return Message': 'No names were processed, the amount of calls to the GitHub API has been reached. Please wait until your limit has been reset.'}
+            return {'keyData': ['N/A'], 'Return Message': 'No names were processed, the amount of calls to the GitHub API has been reached. Please wait until your limit has been reset.'}
 
 api.add_resource(MyResource, '/IDsandKeys')
 
