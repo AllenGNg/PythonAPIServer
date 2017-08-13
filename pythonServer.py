@@ -10,56 +10,42 @@ api = Api(app)
 class MyResource(Resource):
     def post(self):
 
-        # Final list to be returned to Client.
-        usernames = []
-
         # Load the data given by the client,
-        dict = json.loads(request.data)
-        name = dict.get('user-name-list')
+        inputDict = json.loads(request.data)
+        nameList = inputDict.get('user-name-list')
 
-        # The outline for the output back to the client. NOT IN USE
-        #dict2 = {'id': '', 'key': ''}
-        #dict1 = {'name': '', 'id-key': dict2}
-        #dict0 = {'user-keys' : dict1}
-
-        dict6 = {}
-        nameess = 'Allen'
-        idd = 6
-        keyy = 'AAAAAA'
-        dict6[nameess] = ({'id': idd, 'key': keyy})
-
-        listttt = []
-        listttt.append({'id': idd})
+        outputDict = {}
+        dictList = []
 
         # Begin looping and get the ID and Key for the given GitHub usernames
-        for i in range(0, len(name)):
-            dict5 = {'username': '', 'id': '', 'key': ''}
-
-            f = requests.get('https://api.github.com/users/%s/keys' % name[i])
-
-            # Regardless if the user has keys or IDs, set their usename.
-            dict5['username'] = name[i]
+        for i in range(0, len(nameList)):
+            f = requests.get('https://api.github.com/users/%s/keys' % nameList[i])
 
             # Check to see if it was successful and returned something.
             if(f.status_code == requests.codes.ok):
-                dictResult = f.json()
+                responseData = f.json()
 
                 # Incase the user has multiple keys and IDs.
-                for j in dictResult:
-                    dict5['id'] = j['id']
-                    dict5['key'] = j['key']
-                    usernames.append(dict5.items())
+                # Counter used for creating the key for the first id and key found
+                counter = 1
+                for j in responseData:
+                    # If this is the first run through, it will create the key which is the username.
+                    if(counter == 1):
+                        outputDict[nameList[i]] = [{'id': j['id'], 'key': j['key']}]
+                    # If there are more than one key and id, it will then append them to the end of the list for that username.
+                    else:
+                        dictList = outputDict.get(nameList[i])
+                        dictList.append({'id': j['id'], 'key': j['key']})
+                    counter = counter + 1
 
-            # If it does not return anything, fill in the blanks with 'N/A'.
-            else:
-                dict5['id'] = 'N/A'
-                dict5['key'] = 'N/A'
-                usernames.append(dict5.items())
+            # If the username is not found (404), set its ID and Key as 'N/A'.
+            elif(f.status_code == 404):
+                outputDict[nameList[i]] = [{'id': 'N/A', 'key': 'N/A'}]
 
-        # Sends the list with all usernames, keys, and IDs to the client.
-        return {'message': usernames}
+        # Sends the dictionary with all usernames, keys, and IDs to the client.
+        return {'message': outputDict}
 
 api.add_resource(MyResource, '/')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
