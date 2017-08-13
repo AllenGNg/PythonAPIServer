@@ -10,7 +10,6 @@ api = Api(app)
 class MyResource(Resource):
     def post(self):
 
-
         # Load the data given by the client,
         inputDict = json.loads(request.data)
         nameList = inputDict.get('user-name-list')
@@ -27,23 +26,26 @@ class MyResource(Resource):
                 responseData = f.json()
 
                 # Incase the user has multiple keys and IDs.
+                # Counter used for creating the key for the first id and key found
                 counter = 1
                 for j in responseData:
+                    # If this is the first run through, it will create the key which is the username.
                     if(counter == 1):
                         outputDict[nameList[i]] = [{'id': j['id'], 'key': j['key']}]
+                    # If there are more than one key and id, it will then append them to the end of the list for that username.
                     else:
                         dictList = outputDict.get(nameList[i])
                         dictList.append({'id': j['id'], 'key': j['key']})
                     counter = counter + 1
 
-            # If it does not return anything, fill in the blanks with 'N/A'.
-            else:
+            # If the username is not found (404), set its ID and Key as 'N/A'.
+            elif(f.status_code == 404):
                 outputDict[nameList[i]] = [{'id': 'N/A', 'key': 'N/A'}]
 
-        # Sends the list with all usernames, keys, and IDs to the client.
+        # Sends the dictionary with all usernames, keys, and IDs to the client.
         return {'message': outputDict}
 
 api.add_resource(MyResource, '/')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
