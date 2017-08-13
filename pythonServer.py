@@ -7,6 +7,7 @@ import pprint
 app = Flask(__name__)
 api = Api(app)
 
+
 class MyResource(Resource):
     def post(self):
 
@@ -16,6 +17,8 @@ class MyResource(Resource):
 
         outputDict = {}
         dictList = []
+        got200 = False
+        got429 = False
 
         # Begin looping and get the ID and Key for the given GitHub usernames
         for i in range(0, len(nameList)):
@@ -37,15 +40,24 @@ class MyResource(Resource):
                         dictList = outputDict.get(nameList[i])
                         dictList.append({'id': j['id'], 'key': j['key']})
                     counter = counter + 1
+                    got200 = True
 
             # If the username is not found (404), set its ID and Key as 'N/A'.
             elif(f.status_code == 404):
                 outputDict[nameList[i]] = [{'id': 'N/A', 'key': 'N/A'}]
 
-        # Sends the dictionary with all usernames, keys, and IDs to the client.
-        return {'message': outputDict}
+            elif(f.status_code == 429):
+                got429 = True
 
-api.add_resource(MyResource, '/')
+        # Sends the dictionary with all usernames, keys, and IDs to the client.
+        if(got200 == True and got429 == False):
+            return {'keyData': outputDict, 'Return Message': 'No Errors Occured.' }
+        elif(got200 == True and got429 == True):
+            return{'keyData': outputDict, 'Return Message': 'All names were processed but due to the limit of API calls being met, not all keys and IDs may be shown.'}
+        elif(got200 == False and got429 == True):
+            return {'keyData': [], 'Return Message': 'No names processed, API Calls limit has been reached.'}
+
+api.add_resource(MyResource, '/getKeys')
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
