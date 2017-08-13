@@ -15,16 +15,19 @@ class MyResource(Resource):
         inputDict = json.loads(request.data)
         nameList = inputDict.get('user-name-list')
 
+        # Dictionary to return to Client.
         outputDict = {}
+        # List incase a Username has more than one ID and Key.
         dictList = []
+        # Bools to check if certain Status Codes were used.
         got200 = False
-        got429 = False
+        got403 = False
 
         # Begin looping and get the ID and Key for the given GitHub usernames
         for i in range(0, len(nameList)):
             f = requests.get('https://api.github.com/users/%s/keys' % nameList[i])
 
-            # Check to see if it was successful and returned something.
+            # Check to see if it was successful and returned Code 200.
             if(f.status_code == requests.codes.ok):
                 print(f.status_code)
                 responseData = f.json()
@@ -46,17 +49,17 @@ class MyResource(Resource):
             # If the username is not found (404), set its ID and Key as 'N/A'.
             elif(f.status_code == 404):
                 outputDict[nameList[i]] = [{'id': 'N/A', 'key': 'N/A'}]
-
-            elif(f.status_code == 429):
-                got429 = True
+            # We are checking 403 instead of 429 since the GitHub API uses 403 instead of 429 when the API call limit has been reached.
+            elif(f.status_code == 403):
+                got403 = True
 
         # Sends the dictionary with all usernames, keys, and IDs to the client.
         # Checks certain cases, and responds accordingly.
-        if(got200 == True and got429 == False):
+        if(got200 == True and got403 == False):
             return {'keyData': outputDict, 'Return Message': 'No Errors Occured.' }
-        elif(got200 == True and got429 == True):
+        elif(got200 == True and got403 == True):
             return{'keyData': outputDict, 'Return Message': 'All names were processed but due to the limit of API calls being met, not all keys and IDs may be shown.'}
-        elif(got200 == False and got429 == True):
+        elif(got200 == False and got403 == True):
             return {'keyData': [], 'Return Message': 'No names were processed, the amount of calls to the GitHub API has been reached. Please wait until your limit has been reset.'}
 
 api.add_resource(MyResource, '/IDsandKeys')
