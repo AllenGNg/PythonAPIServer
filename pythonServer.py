@@ -26,6 +26,7 @@ class MyResource(Resource):
 
             # Check to see if it was successful and returned something.
             if(f.status_code == requests.codes.ok):
+                print(f.status_code)
                 responseData = f.json()
 
                 # Incase the user has multiple keys and IDs.
@@ -58,7 +59,7 @@ class MyResource(Resource):
         elif(got200 == False and got429 == True):
             return {'keyData': [], 'Return Message': 'No names were processed, the amount of calls to the GitHub API has been reached. Please wait until your limit has been reset.'}
 
-api.add_resource(MyResource, '/getKeys')
+api.add_resource(MyResource, '/IDsandKeys')
 
 if __name__ == '__main__':
     app.run(debug=True)
