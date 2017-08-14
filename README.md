@@ -68,7 +68,7 @@ $ curl https://api.github.com/rate_limit
   }
 }
 ```
-As you can see from the output, I now have 57 remaining out of 60. One key thing to look at is the `"reset"` timer in the `"core"` dictionary. It is in Epoch time, so to see when your limit will be reset you can use an online Epoch time converter. If I convert that time, it is 2:23:56 PM in my local time zone. So once it passes 2:23:56 PM my limit will reset and I will have 60 API calls remaining.
+As you can see from the output, I now have 57 remaining out of 60. One key thing to look at is the `"reset"` timer in the `"core"` dictionary. It is in Epoch time, so to see when your limit will be reset, you can use an online Epoch time converter. If I convert that time, it is 2:23:56 PM in my local time zone. So once it passes 2:23:56 PM, my limit will be reset and I will have 60 API calls again.
 
 ## **Conclusion:**
 Thanks for taking a look at my README and my code! This was the first time I have done something related to this, so it was a great learning experience and I enjoyed every bit of it!
