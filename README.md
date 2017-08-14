@@ -5,7 +5,7 @@ A simple Python API Server using GitHub's API for Replicated Code Challenge.
 Given a list of GitHub usernames through a POST request, using GitHub's API, return all of the users' IDs and Public SSH Keys in JSON format. Some users may have more than one ID and Public SSH Keys.
 
 ## **Design:**
-My project has two files, one file is for a client and one is for a server.
+My project has two files, one file is for a client and one file is for a server.
 The client is used to call the new POST API that I have written. In lieu of using the client, the Postman application can also be used to invoke the new POST API. 
 The server implements the new POST API using the Flask framework. The new POST API accepts request data that consists of a list of usernames for which the ID and public SSH key should be retrieved using a GitHub API. The POST API has the following endpoint: IDsandKey. 
 The new POST API returns response data that is a dictionary that is keyed by usernames. For each user, a list of dictionaries will be returned with the ID(s) and public SSH key(s) (if the user was found in GitHub). A list is returned because some users can have more than one ID and public SSH key in GitHub. If a user is not found in GitHub, then the ID and public SSH key for that user will be set to 'N/A'. The response data also has a message field that contains an useful informational message about the processing that was just performed. 
@@ -21,7 +21,7 @@ There are 2 ways to use the API Server
 
 **1)** I have included a makefile to make it as easy as possible. Open 2 terminal sessions and in one of them, type `make server` and this will start up the API server. Then on the other terminal session, you will run the client via typing `make client`. The client will then send the POST request to the server which will then call the GitHub API for each username included in the list. It will then output onto the terminal session, all of the GitHub users' IDs and Public SSH Keys, if they have any. If the user name is not found, it will still return their username, but the ID and Key will be set to 'N/A'. 
 
-**2)** Another way to invoke the new API is to use an application such as Postman. By using the URL in the Server and Client file which is `http://127.0.0.1:5000/IDsandKeys` and setting the header content type as `applications/json`, you can now send in your list of usernames by using the following format, `{"user-name-list": ["allengng"]}`. Just be sure to start the server prior to sending the POST request.
+**2)** Another way to invoke the new API is to use an application such as Postman. By using the URL in the Client file which is `http://127.0.0.1:5000/IDsandKeys` and setting the header content type as `applications/json`, you can now send in your list of usernames by using the following format, `{"user-name-list": ["allengng"]}`. Just be sure to start the server prior to sending the POST request.
 
 ## **Example:**
 I will now show an example of using the new API. In the client file, you update the Dictionary dict to specify the usernames you want to use the GitHub API to search for. For example, if I want to search my username, it will look like this. `{'user-name-list': ['allengng']}`. 'user-name-list' is the Key and any username in the list will be searched. So, if I want to search 3 usernames, it will look like this: `{'user-name-list': ['allengng', 'mjluck', 'allengn']}`. If I run the Client file with the dictionary shown  above (3 usernames), I will get the following output shown below.
