@@ -27,6 +27,7 @@ There are 2 ways to use the API Server
 I will now show an example of using the new API. In the client file, you update the Dictionary dict to specify the usernames you want to use the GitHub API to search for. For example, if I want to search my username, it will look like this. `{'user-name-list': ['allengng']}`. 'user-name-list' is the Key and any username in the list will be searched. So, if I want to search 3 usernames, it will look like this: `{'user-name-list': ['allengng', 'mjluck', 'allengn']}`. If I run the Client file with the dictionary shown  above (3 usernames), I will get the following output shown below.
 
 ```
+All users processed.
 {u'allengn': [{u'id': u'N/A', u'key': u'N/A'}],
  u'allengng': [{u'id': 19486910,
                 u'key': u'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxe/5H72brc67HCYiOHYan2ZfCSqAS0IetBlfV1mDdd01I8dmotr56AbZdr/mP7Cc2CxM2yMBLEt3XPwdtouRvZHqidbTuTvOsmZPyhkI/95gCzCH6hh2iKfCqUj9dRUfayEo69rxcikzVSpuV7X1bO1nbJxHMnW+DrNFfhBfhkdCJ6mRkydJ3bYosNsj5v1Vb3QcveqAvJN6m5Os8ux20HTwdzrUjIf927H1B2h+wgT9p8TZlXNqyE9/dTX5LzamMIJ+jnWWwzytTJXTZ2Q2YnCWdd1Fvnb/vU1m8c+3ZxAOZ+JRBesO+vuKXb6wNY+u11Rr0m9G6QgzF3Rh/sAix'}],
