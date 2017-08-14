@@ -12,7 +12,7 @@ The new POST API returns response data that is a dictionary that is keyed by use
 To account for possible edge cases, the status code from calling the GitHub API is checked. If a status code of 200 is returned, then the call was successful. If a status code of 404 is returned, it means that the user was not found in GitHub and the ID and public SSH key is set to 'N/A'. If a status code of 403 is returned, it means that the user has reached the calling limit for the GitHub API that the server needs to use. Any data that was successfully retrieved prior to reaching the calling limit is returned (the message in the response data will indicate such a condition). 
 
 ### **Request Data Schema**
-Key| Data Type| Description
+Key| Value Data Type| Description
 ----|---------|----------
 `'user-name-list'`| List of Strings | The usernames to retrieve their GitHub IDs and Public SSH Keys using the GitHub API.
 
