@@ -21,7 +21,7 @@ Key| Value Data Type| Description
 ----|---------|-------------
 `'info-message'`| String | Informational message describing the outcome of the REST API.
 `'key-data'`| Dictionary| Dictionary of IDs and Public SSH Keys pertaining to their users.
-`Username from Request Data` | List of Dictionaries | List of Dictionaries containging that user's ID and Public SSH Keys. They have as many dictionaries in the list as they have IDs and Public SSH Key pairs in GitHub.
+`Username from Request Data` | List of Dictionaries | List of Dictionaries containing that user's ID and Public SSH Keys. They have as many dictionaries in the list as they have IDs and Public SSH Key pairs in GitHub.
 `'id'`| Int | GitHub ID for the username.
 `'key'`| String | Public SSH Key for the username.
 
