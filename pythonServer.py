@@ -1,5 +1,5 @@
 # This implements the IDsandKeys API which returns the IDs and Public SSH Keys for the specified users.
-from flask import Flask, request
+from flask import Flask, request, abort
 from flask_restful import Resource, Api
 import json
 import requests
@@ -17,7 +17,12 @@ class MyResource(Resource):
         dictList = []
 
         # Load the data passed by the client.
-        inputDict = json.loads(request.data)
+        # Try and Except block incase no request data was provided.
+        try:
+            inputDict = json.loads(request.data)
+        except:
+            return abort(400)
+
         nameList = inputDict.get('user-name-list')
 
         # Booleans to check if certain Status Codes were received.
@@ -26,11 +31,9 @@ class MyResource(Resource):
         gotStatusCode404 = False
 
         # Process all usernames.
-        print(len(nameList))
         # Checking if passed list is empty.
         if not nameList:
             return{'key-data': outputDict, 'info-message': 'No usernames were processed due to an empty list being passed'}
-            print('List is Empty')
 
         for i in range(0, len(nameList)):
             f = requests.get('https://api.github.com/users/%s/keys' % nameList[i])
@@ -46,13 +49,11 @@ class MyResource(Resource):
                 for j in responseData:
                     # Processing first ID and Key, create the list of dictionaries for this user.
                     if(counter == 1):
-                        print('List of Dicitonary Created')
                         outputDict[nameList[i]] = [{'id': j['id'], 'key': j['key']}]
                     else:
                         # Add new ID and Key dictionary to the list.
                         dictList = outputDict.get(nameList[i])
                         dictList.append({'id': j['id'], 'key': j['key']})
-                        print('dictionary added to list')
                     counter = counter + 1
                     gotStatusCode200 = True
 
@@ -60,7 +61,6 @@ class MyResource(Resource):
             elif(f.status_code == 404):
                 outputDict[nameList[i]] = [{'id': 'N/A', 'key': 'N/A'}]
                 gotStatusCode404 = True
-                print('Dicitonary created for user not found 404')
             # We are checking 403 instead of 429 since the GitHub API uses 403 instead of 429 when the API call limit has been reached.
             elif(f.status_code == 403):
                 gotStatusCode403 = True
