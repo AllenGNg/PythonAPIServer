@@ -13,7 +13,7 @@ class MyResource(Resource):
 
         # Dictionary to return to Client.
         outputDict = {}
-        # List of IDs and Keys dictionary for users.
+        # List of IDs and Keys dictionaries for users.
         dictList = []
 
         # Load the data passed by the client.
@@ -36,13 +36,13 @@ class MyResource(Resource):
                 # Create the dictionary for each username.
                 # Counter is used to insure that a single list of dictionaries is created for each user.
                 counter = 1
-                # If the user has more than one ID and Key, we will loop through until we have appended all the ID and Key pairs to that users dictionary.
+                # If the user has more than one ID and Key, we will loop through until we have appended all the ID and Key pairs to that user's dictionary.
                 for j in responseData:
-                    # Processing first ID and Key, create the list of dictionary for this user.
+                    # Processing first ID and Key, create the list of dictionaries for this user.
                     if(counter == 1):
                         outputDict[nameList[i]] = [{'id': j['id'], 'key': j['key']}]
-                    # Add new ID and Key dictionary to the list.
                     else:
+                        # Add new ID and Key dictionary to the list.
                         dictList = outputDict.get(nameList[i])
                         dictList.append({'id': j['id'], 'key': j['key']})
                     counter = counter + 1
@@ -69,4 +69,4 @@ class MyResource(Resource):
 api.add_resource(MyResource, '/IDsandKeys')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
