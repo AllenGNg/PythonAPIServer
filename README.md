@@ -11,6 +11,20 @@ The server implements the new POST API using the Flask framework. The new POST A
 The new POST API returns response data that is a dictionary that is keyed by usernames. For each user, a list of dictionaries will be returned with the ID(s) and public SSH key(s) (if the user was found in GitHub). A list is returned because some users can have more than one ID and public SSH key in GitHub. If a user is not found in GitHub, then the ID and public SSH key for that user will be set to 'N/A'. The response data also has a message field that contains an useful informational message about the processing that was just performed. 
 To account for possible edge cases, the status code from calling the GitHub API is checked. If a status code of 200 is returned, then the call was successful. If a status code of 404 is returned, it means that the user was not found in GitHub and the ID and public SSH key is set to 'N/A'. If a status code of 403 is returned, it means that the user has reached the calling limit for the GitHub API that the server needs to use. Any data that was successfully retrieved prior to reaching the calling limit is returned (the message in the response data will indicate such a condition). 
 
+### **Request Data Schema**
+Key| Data Type| Description
+----|---------|----------
+`{user-name-list}`| List of Strings | The usernames to retrieve their GitHub IDs and Public SSH Keys using the GitHub API.
+
+### **Response Data Schema**
+Key| Value Data Type| Description
+----|---------|-------------
+`'info-message'`| String | Informational message describing the outcome of the REST API.
+`'key-data'`| Dictionary| Dictionary of IDs and Public SSH Keys pertaining to their users.
+Username from Request Data | List of Dictionaries | List of Dictionaries containging that user's ID and Public SSH Keys. They have as many dictionaries in the list as they have IDs and Public SSH Key pairs in GitHub.
+`'id'`| Int | GitHub ID for the username.
+`'key'`| String | Public SSH Key for the username.
+
 ## **Setting Up:**
 To run the code, your system will need to have flask and flask-restful installed as they are required packages to run the server. To install these 2 packages, you can simply type `pip install flask` and `pip install flask-restful`.
 To change the usernames to retrieve GitHub private keys for, edit the pythonClient.py file. In the pythonClient.py file, there is a Dictionary labeled dict. For example, `dict = {'user-name-list': 'allengng', 'mjluck'}` here you will want to edit the list to include the names of the GitHub users to search for.
