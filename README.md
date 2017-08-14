@@ -14,7 +14,7 @@ To account for possible edge cases, the status code from calling the GitHub API 
 ### **Request Data Schema**
 Key| Data Type| Description
 ----|---------|----------
-`{user-name-list}`| List of Strings | The usernames to retrieve their GitHub IDs and Public SSH Keys using the GitHub API.
+`'user-name-list'`| List of Strings | The usernames to retrieve their GitHub IDs and Public SSH Keys using the GitHub API.
 
 ### **Response Data Schema**
 Key| Value Data Type| Description
