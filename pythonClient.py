@@ -1,12 +1,15 @@
-# Creating the intial file for the client
+# Client for invoking the IDsandKeys Endpoint.
 import json
 import requests
 import pprint
+
+# Endpoint of the API to invoke.
 url = 'http://127.0.0.1:5000/IDsandKeys'
-# Names of the GitHub Usernames you want to search.
-dict = {'user-name-list': ['mjluck', 'allengng', 'kodyfint','siushi']}
+
+# Usernames of the GitHub users you want to search.
+dict = {'user-name-list': ['allengng']}
 data = json.dumps(dict)
 headers = {'Content-Type': 'application/json'}
 response = requests.post(url, data=data, headers=headers)
-print(response.json()['Return Message'])
-pprint.pprint(response.json()['keyData'])
+print(response.json()['info-message'])
+pprint.pprint(response.json()['key-data'])
