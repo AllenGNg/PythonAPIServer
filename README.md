@@ -1,8 +1,8 @@
 # PythonAPIServer
-A simple Python API Server using GitHub's API for Replicated Code Challenge
+A simple Python API Server using GitHub's API for Replicated Code Challenge.
 
 ## **Challenge**
-Given a list of GitHub User names through a POST request, using GitHub's API, return all of the usernames' IDs and Public SSH Keys in JSON. Some people may have more than one ID and Public SSH Keys.
+Given a list of GitHub usernames through a POST request, using GitHub's API, return all of the users IDs and Public SSH Keys in JSON. Some people may have more than one ID and Public SSH Keys.
 
 ## **Design:**
 My project has two files, one file is for a client and one is for a server.
